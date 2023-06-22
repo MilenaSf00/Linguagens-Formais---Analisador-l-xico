@@ -1,0 +1,31 @@
+function calcularMedia(notas) {
+  var total = 0;
+
+  for (var i = 0; i < notas.length; i++) {
+    total += notas[i];
+  }
+
+  var media = total / notas.length;
+
+  return media;
+}
+
+function verificarAprovacao(media) {
+  var mensagem;
+
+  if (media >= 7) {
+    mensagem = "Parabéns! Você foi aprovado.";
+  } else {
+    mensagem = "Infelizmente, você foi reprovado.";
+  }
+
+  return mensagem;
+}
+
+var notasAluno = [8, 7, 6, 9, 8];
+var mediaAluno = calcularMedia(notasAluno);
+var mensagemAprovacao = verificarAprovacao(mediaAluno);
+
+console.log("Notas do aluno:", notasAluno);
+console.log("Média do aluno:", mediaAluno);
+console.log("Mensagem de aprovação:", mensagemAprovacao);
