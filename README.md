@@ -1,2 +1,2 @@
-# Linguagens-Formais---Analisador-l-xico
+# Linguagens-Formais---Analisador-lexico
 Trabalho prático de Linguagens Formais
