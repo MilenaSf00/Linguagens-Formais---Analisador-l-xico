@@ -1,0 +1,42 @@
+function calcularMediaEVerificarAprovacao() {
+  // Solicitar as notas do aluno e tratar exceções
+  let nota1, nota2;
+
+  do {
+    try {
+      nota1 = parseFloat(prompt("Digite a primeira nota:"));
+      if (isNaN(nota1)) {
+        throw new Error("Valor inválido. Digite um número válido.");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  } while (isNaN(nota1));
+
+  do {
+    try {
+      nota2 = parseFloat(prompt("Digite a segunda nota:"));
+      if (isNaN(nota2)) {
+        throw new Error("Valor inválido. Digite um número válido.");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  } while (isNaN(nota2));
+
+  // Calcular a média das notas
+  const media = (nota1 + nota2) / 2;
+
+  // Definir o limite de aprovação
+  const limiteAprovacao = 7;
+
+  // Verificar se o aluno passou ou não
+  if (media >= limiteAprovacao) {
+    console.log("Parabéns! Você foi aprovado(a) com média " + media.toFixed(2));
+  } else {
+    console.log("Infelizmente, você foi reprovado(a) com média " + media.toFixed(2));
+  }
+}
+
+// Chamar a função para executar o código
+calcularMediaEVerificarAprovacao();
