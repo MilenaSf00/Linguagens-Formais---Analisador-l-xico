@@ -6,6 +6,7 @@ import Tokens.TokenBoolean;
 import Tokens.TokenComentario;
 import Tokens.TokenCondicional;
 import Tokens.TokenDelimitador;
+import Tokens.TokenLeitura;
 import Tokens.TokenNome;
 import Tokens.TokenOperador;
 import Tokens.TokenPalavraReservadas;
@@ -140,10 +141,12 @@ public class AnalisadorLexico {
                     tokens.add(new Token(TokenNome.ESCRITA, palavra, linha + 1, coluna + 1));
                 } 
                 // Verifica se a palavra é uma função de leitura (console.log())
-                else if (verificador.isLeitura(palavra)) {
-                tokens.add(new Token(TokenNome.LEITURA, palavra, linha + 1, coluna + 1));
-                continue; // Pula para a próxima palavra
-                }
+               else if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
+    if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
+        tokens.add(new Token(TokenNome.LEITURA, TokenLeitura.CONSOLE_LOG.getValor(), linha + 1, coluna + 1));
+        coluna += 2; // Avança para a próxima palavra após "log"
+    }
+}
 
                
 

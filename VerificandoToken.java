@@ -78,25 +78,9 @@ public boolean isOperador(String palavra) {
 
     // Verifica se o trecho de código corresponde à função console.log()
     public boolean isLeitura(String codigo) {
-        //return codigo.startsWith("console.log(") && codigo.endsWith(")");
-         /*for (TokenLeitura token : TokenLeitura.values()) {
-        if (codigo.equals(token.getValor())) {
-            return true;
-        }
-    }
-    return false;*/
- //return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor());
+    return codigo.startsWith(TokenLeitura.CONSOLE_LOG.getValor());
+}
 
-//return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor().split("\\.")[0]);
-
-
-// Verifica se a palavra completa é "console.log"
-    if (codigo.equals(TokenLeitura.CONSOLE_LOG.getValor())) {
-        return true;
-    }
-    return false;
-    
-    }
 
  // Verifica se o caractere é um delimitador
 public boolean isDelimitador(char x) {
