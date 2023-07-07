@@ -21,7 +21,7 @@ public class AnalisadorLexico {
 
 
 
-    private boolean isInsideSpecificFunction(String[] palavras, int coluna) {
+    /*private boolean isInsideSpecificFunction(String[] palavras, int coluna) {
         // Verifique se a palavra está dentro da função console.log()
         // Verifique os elementos anteriores e posteriores para garantir que a função esteja completa
         if (coluna > 0 && coluna < palavras.length - 1) {
@@ -32,7 +32,7 @@ public class AnalisadorLexico {
             }
         }
         return false;
-    }
+    }*/
 
     // Método para analisar o código e retornar a lista de tokens encontrados
     public List<Token> analisarCodigo(String codigo) {
@@ -141,15 +141,11 @@ public class AnalisadorLexico {
                 } 
                 // Verifica se a palavra é uma função de leitura (console.log())
                 else if (verificador.isLeitura(palavra)) {
-                    tokens.add(new Token(TokenNome.LEITURA, palavra, linha + 1, coluna + 1));
+                tokens.add(new Token(TokenNome.LEITURA, palavra, linha + 1, coluna + 1));
                 continue; // Pula para a próxima palavra
                 }
 
-                // Verifica se a palavra é um ponto (.) e não está dentro de uma função específica
-                if (palavra.equals(".") && !isInsideSpecificFunction(palavras, coluna)) {
-                    tokens.add(new Token(TokenNome.DELIMITADOR, TokenDelimitador.PONTO.name(), linha + 1, coluna + 1));
-                    continue; // Pula para a próxima palavra
-                }
+               
 
                 // Verifica se a palavra é um delimitador
                 else if (!palavra.isEmpty() && verificador.isDelimitador(palavra.charAt(0))){TokenDelimitador delimitador = null;
@@ -203,11 +199,27 @@ public class AnalisadorLexico {
                     TokenVariaveis variavel = TokenVariaveis.valueOf(palavra.toUpperCase());
                     tokens.add(new Token(TokenNome.VARIAVEIS, variavel.name(), linha + 1, coluna + 1));
                 } 
+
+
                 // Verifica se a palavra é uma estrutura de repetição
-                else if (verificador.isRepeticao(palavra)) {
-                    TokenRepeticao repeticao = TokenRepeticao.valueOf(palavra.toUpperCase());
-                    tokens.add(new Token(TokenNome.REPETICAO, repeticao.name(), linha + 1, coluna + 1));
-                } 
+                else if (palavra.equals("do") && coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("{")) {
+                    tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
+                    coluna++; // Avança para a próxima palavra para evitar repetição
+                }
+
+                // Verifica se há um fechamento de chaves e se a próxima palavra é "while"
+                if (palavra.equals("}") && coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("while")) {
+                    tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
+                    coluna++; // Avança para a próxima palavra para evitar repetição
+                }
+
+                
+
+
+
+
+
+
                 // Verifica se a palavra é um valor booleano
                 else if (verificador.isBoolean(palavra)) {
                 // Remove o ponto e vírgula do final da palavra, se houver

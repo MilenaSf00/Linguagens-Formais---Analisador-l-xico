@@ -86,8 +86,15 @@ public boolean isOperador(String palavra) {
     }
     return false;*/
  //return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor());
-return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor().split("\\.")[0]);
 
+//return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor().split("\\.")[0]);
+
+
+// Verifica se a palavra completa é "console.log"
+    if (codigo.equals(TokenLeitura.CONSOLE_LOG.getValor())) {
+        return true;
+    }
+    return false;
     
     }
 
