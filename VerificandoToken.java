@@ -7,7 +7,6 @@ import Tokens.TokenRepeticao;
 import Tokens.TokenVariaveis;
 
 
-
 //O método startsWith verifica se uma string começa com determinado prefixo. Por exemplo, codigo.startsWith("//") verifica se a string codigo começa com //. Se sim, significa que o trecho de código é um comentário de linha.
 //O método matches verifica se uma string corresponde a um padrão regular expressão. 
 // Essa classe  contém métodos para verificar diferentes tipos de tokens em um código-fonte.
@@ -21,8 +20,6 @@ public class VerificandoToken {
     // Verifica se o trecho de código corresponde a um número real
     public boolean isNReal(String codigo) {
         return codigo.matches("\\d+\\.\\d*");
-
-       
     }
 
     // Verifica se o trecho de código corresponde a um número inteiro
@@ -32,31 +29,16 @@ public class VerificandoToken {
 
     // Verifica se o trecho de código corresponde a uma string delimitada por aspas
     public boolean isNString(char codigo) {
-        //return codigo.matches("\".*\"") || codigo.matches("'.*'");
-    
-    return codigo == '"' || codigo == '\'';
+        return codigo == '"' || codigo == '\'';
     /*return codigo == TokenNString.ASPAS_SIMPLES.getValor() ||
            codigo == TokenNString.ASPAS_DUPLAS.getValor();*/
     }
-
-    // Verifica se o caractere é um operador
-    /*public boolean isOperador(char x) {
-        return x == '+' || x == '-' || x == '*' || x == '=' || x == '%' ||
-               x == '&' || x == '|' || x == '!'|| x == '>';
-    }*/
-
-public boolean isOperador(String palavra) {
-    return palavra.equals("+") || palavra.equals("-") || palavra.equals("*") || palavra.equals("=") ||
-           palavra.equals("%") || palavra.equals("&&") || palavra.equals("||") || palavra.equals("!") ||
-           palavra.equals(">") || palavra.equals("<") || palavra.equals(">=") || palavra.equals("<=") ||
-           palavra.equals("==") ||  palavra.equals("/");
-}
-
-
-
-
-
-
+    public boolean isOperador(String palavra) {
+        return palavra.equals("+") || palavra.equals("-") || palavra.equals("*") || palavra.equals("=") ||
+            palavra.equals("%") || palavra.equals("&&") || palavra.equals("||") || palavra.equals("!") ||
+            palavra.equals(">") || palavra.equals("<") || palavra.equals(">=") || palavra.equals("<=") ||
+            palavra.equals("==") ||  palavra.equals("/");
+    }
 
     // Verifica se o trecho de código corresponde a um comentário
     public boolean isComentario(String codigo) {
@@ -72,25 +54,19 @@ public boolean isOperador(String palavra) {
             return true;
         }
     }
-    return false;
-    
+        return false;
     }
 
     // Verifica se o trecho de código corresponde à função console.log()
     public boolean isLeitura(String codigo) {
-    
        return codigo.startsWith(TokenLeitura.CONSOLE_LOG.getValor());
-   
+    }
 
-}
-
-
- // Verifica se o caractere é um delimitador
-public boolean isDelimitador(char x) {
-    return x == '{' || x == '}' || x == '(' || x == ')' ||
-           x == '[' || x == ']' || x == ',' || x == ';' ||
-           x == '.' || x == ':';}
-
+    // Verifica se o caractere é um delimitador
+    public boolean isDelimitador(char x) {
+        return x == '{' || x == '}' || x == '(' || x == ')' ||
+            x == '[' || x == ']' || x == ',' || x == ';' ||
+            x == '.' || x == ':';}
 
     // Verifica se a palavra é uma estrutura condicional
     public boolean isCondicional(String palavra) {
@@ -114,13 +90,8 @@ public boolean isDelimitador(char x) {
 
     // Verifica se a palavra é uma estrutura de repetição
     public boolean isRepeticao(String palavra) {
-        
-      
-
-
         try {
             TokenRepeticao.valueOf(palavra.toUpperCase());
-            
             return true;
         } catch (IllegalArgumentException e) {
             return false;

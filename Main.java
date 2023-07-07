@@ -12,7 +12,7 @@ public class Main {
             String codigo = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
 
             AnalisadorLexico analisador = new AnalisadorLexico();
-            List<Token> tokens = analisador.analisarCodigo(codigo);
+            List<Token> tokens = analisador.le_token(codigo);
 
             for (Token token : tokens) {
                 System.out.println(token);

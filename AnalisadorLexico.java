@@ -21,7 +21,7 @@ public class AnalisadorLexico {
     }
 
     // Método para analisar o código e retornar a lista de tokens encontrados
-    public List<Token> analisarCodigo(String codigo) {
+    public List<Token> le_token(String codigo) {
         List<Token> tokens = new ArrayList<>();
         String[] linhas = codigo.split("\\n");
     
@@ -84,20 +84,20 @@ public class AnalisadorLexico {
                         case "<":
                             operador = TokenOperador.MENOR;
                             break;
-                    case ">=":
-                            operador = TokenOperador.MAIOR_IGUAL;
+                        case ">=":
+                                operador = TokenOperador.MAIOR_IGUAL;
+                                break;
+                        case "<=":
+                            operador = TokenOperador.MENOR_IGUAL;
                             break;
-                    case "<=":
-                        operador = TokenOperador.MENOR_IGUAL;
-                        break;
-                    case "==":
-                        operador = TokenOperador.IGUAL;
-                        break;
-                    case "/":
-                        operador = TokenOperador.DIVISOR;
-                        break;
-                }
-                // Se um operador válido for identificado, adiciona o token correspondente à lista de tokens
+                        case "==":
+                            operador = TokenOperador.IGUAL;
+                            break;
+                        case "/":
+                            operador = TokenOperador.DIVISOR;
+                            break;
+                    }
+                        // Se um operador válido for identificado, adiciona o token correspondente à lista de tokens
                     if (operador != null) {
                         tokens.add(new Token(TokenNome.OP, operador.name(), linha + 1, coluna + 1));
                     }
@@ -199,7 +199,6 @@ public class AnalisadorLexico {
                     tokens.add(new Token(TokenNome.VARIAVEIS, variavel.name(), linha + 1, coluna + 1));
                 } 
 
-
                 // Verifica se a palavra é uma estrutura de repetição
                 else if (palavra.equals("do") && coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("{")) {
                     tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
@@ -211,8 +210,6 @@ public class AnalisadorLexico {
                     tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
                     coluna++; // Avança para a próxima palavra para evitar repetição
                 }
-
-
 
                 // Verifica se a palavra é um valor booleano
                 else if (verificador.isBoolean(palavra)) {
@@ -237,11 +234,4 @@ public class AnalisadorLexico {
         }
         return tokens;
     }
-
-
-
-       
-    
-   
-    
 }
