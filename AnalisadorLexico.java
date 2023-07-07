@@ -20,21 +20,6 @@ public class AnalisadorLexico {
         this.verificador = new VerificandoToken();
     }
 
-
-
-    /*private boolean isInsideSpecificFunction(String[] palavras, int coluna) {
-        // Verifique se a palavra está dentro da função console.log()
-        // Verifique os elementos anteriores e posteriores para garantir que a função esteja completa
-        if (coluna > 0 && coluna < palavras.length - 1) {
-            String palavraAnterior = palavras[coluna - 1];
-            String palavraPosterior = palavras[coluna + 1];
-            if (palavraAnterior.equals("console") && palavraPosterior.equals("log")) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     // Método para analisar o código e retornar a lista de tokens encontrados
     public List<Token> analisarCodigo(String codigo) {
         List<Token> tokens = new ArrayList<>();
@@ -48,6 +33,7 @@ public class AnalisadorLexico {
             for (int coluna = 0; coluna < palavras.length; coluna++) {
                 String palavra = palavras[coluna];
 
+                
                 // Verifica se a palavra é um número
             if (!palavra.isEmpty() && verificador.isNumber(palavra.charAt(0))) {
                     
@@ -141,13 +127,23 @@ public class AnalisadorLexico {
                     tokens.add(new Token(TokenNome.ESCRITA, palavra, linha + 1, coluna + 1));
                 } 
                 // Verifica se a palavra é uma função de leitura (console.log())
-               else if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
-    if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
-        tokens.add(new Token(TokenNome.LEITURA, TokenLeitura.CONSOLE_LOG.getValor(), linha + 1, coluna + 1));
-        coluna += 2; // Avança para a próxima palavra após "log"
-    }
-}
+               /*else if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
+                    if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
+                        tokens.add(new Token(TokenNome.LEITURA, TokenLeitura.CONSOLE_LOG.getValor(), linha + 1, coluna + 1));
+                        coluna += 2; // Avança para a próxima palavra após "log"
+                    }
+                }*/
 
+    
+                    /* Ultima modificação da verificação do console.log */
+                // Verifica se a palavra é "console"
+                if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
+                    if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
+                        tokens.add(new Token(TokenNome.LEITURA, "console.log", linha + 1, coluna + 1));
+                        coluna += 2; // Avança para a próxima palavra após "log"
+                        continue; // Pula para a próxima palavra
+                    }
+                }
                
 
                 // Verifica se a palavra é um delimitador
@@ -216,11 +212,6 @@ public class AnalisadorLexico {
                     coluna++; // Avança para a próxima palavra para evitar repetição
                 }
 
-                
-
-
-
-
 
 
                 // Verifica se a palavra é um valor booleano
@@ -243,13 +234,14 @@ public class AnalisadorLexico {
                     tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
                 }
             }
-            
-                // Verificação da estrutura de repetição "do while"
-                /* if (linhas[linha].startsWith("do") && linha + 1 < linhas.length && linhas[linha + 1].trim().startsWith("{")) {
-                        tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, 1));
-                    }*/
-
         }
         return tokens;
     }
+
+
+
+       
+    
+   
+    
 }

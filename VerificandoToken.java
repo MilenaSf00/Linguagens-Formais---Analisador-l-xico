@@ -78,7 +78,10 @@ public boolean isOperador(String palavra) {
 
     // Verifica se o trecho de código corresponde à função console.log()
     public boolean isLeitura(String codigo) {
-    return codigo.startsWith(TokenLeitura.CONSOLE_LOG.getValor());
+    
+       return codigo.startsWith(TokenLeitura.CONSOLE_LOG.getValor());
+   
+
 }
 
 
