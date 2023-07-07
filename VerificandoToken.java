@@ -1,4 +1,7 @@
 import Tokens.TokenCondicional;
+import Tokens.TokenEscrita;
+import Tokens.TokenLeitura;
+import Tokens.TokenNString;
 import Tokens.TokenPalavraReservadas;
 import Tokens.TokenRepeticao;
 import Tokens.TokenVariaveis;
@@ -18,6 +21,8 @@ public class VerificandoToken {
     // Verifica se o trecho de código corresponde a um número real
     public boolean isNReal(String codigo) {
         return codigo.matches("\\d+\\.\\d*");
+
+       
     }
 
     // Verifica se o trecho de código corresponde a um número inteiro
@@ -26,15 +31,32 @@ public class VerificandoToken {
     }
 
     // Verifica se o trecho de código corresponde a uma string delimitada por aspas
-    public boolean isNString(String codigo) {
-        return codigo.matches("\".*\"") || codigo.matches("'.*'");
+    public boolean isNString(char codigo) {
+        //return codigo.matches("\".*\"") || codigo.matches("'.*'");
+    
+    return codigo == '"' || codigo == '\'';
+    /*return codigo == TokenNString.ASPAS_SIMPLES.getValor() ||
+           codigo == TokenNString.ASPAS_DUPLAS.getValor();*/
     }
 
     // Verifica se o caractere é um operador
-    public boolean isOperador(char x) {
+    /*public boolean isOperador(char x) {
         return x == '+' || x == '-' || x == '*' || x == '=' || x == '%' ||
-               x == '&' || x == '|' || x == '!';
-    }
+               x == '&' || x == '|' || x == '!'|| x == '>';
+    }*/
+
+public boolean isOperador(String palavra) {
+    return palavra.equals("+") || palavra.equals("-") || palavra.equals("*") || palavra.equals("=") ||
+           palavra.equals("%") || palavra.equals("&&") || palavra.equals("||") || palavra.equals("!") ||
+           palavra.equals(">") || palavra.equals("<") || palavra.equals(">=") || palavra.equals("<=") ||
+           palavra.equals("==") ||  palavra.equals("/");
+}
+
+
+
+
+
+
 
     // Verifica se o trecho de código corresponde a um comentário
     public boolean isComentario(String codigo) {
@@ -43,19 +65,38 @@ public class VerificandoToken {
 
     // Verifica se o trecho de código corresponde à função prompt()
     public boolean isEscrita(String codigo) {
-        return codigo.startsWith("prompt(") && codigo.endsWith(")");
+       // return codigo.startsWith("prompt(") && codigo.endsWith(")");
+    
+    for (TokenEscrita token : TokenEscrita.values()) {
+        if (codigo.equals(token.getValor())) {
+            return true;
+        }
+    }
+    return false;
+    
     }
 
     // Verifica se o trecho de código corresponde à função console.log()
     public boolean isLeitura(String codigo) {
-        return codigo.startsWith("console.log(") && codigo.endsWith(")");
+        //return codigo.startsWith("console.log(") && codigo.endsWith(")");
+         /*for (TokenLeitura token : TokenLeitura.values()) {
+        if (codigo.equals(token.getValor())) {
+            return true;
+        }
+    }
+    return false;*/
+ //return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor());
+return codigo.equals(TokenLeitura.CONSOLE_LOG.getValor().split("\\.")[0]);
+
+    
     }
 
-    // Verifica se o caractere é um delimitador
-    public boolean isDelimitador(char x) {
-        return x == '{' || x == '}' || x == '(' || x == ')' ||
-               x == '[' || x == ']' || x == ',' || x == ';';
-    }
+ // Verifica se o caractere é um delimitador
+public boolean isDelimitador(char x) {
+    return x == '{' || x == '}' || x == '(' || x == ')' ||
+           x == '[' || x == ']' || x == ',' || x == ';' ||
+           x == '.' || x == ':';}
+
 
     // Verifica se a palavra é uma estrutura condicional
     public boolean isCondicional(String palavra) {
@@ -79,8 +120,13 @@ public class VerificandoToken {
 
     // Verifica se a palavra é uma estrutura de repetição
     public boolean isRepeticao(String palavra) {
+        
+      
+
+
         try {
             TokenRepeticao.valueOf(palavra.toUpperCase());
+            
             return true;
         } catch (IllegalArgumentException e) {
             return false;

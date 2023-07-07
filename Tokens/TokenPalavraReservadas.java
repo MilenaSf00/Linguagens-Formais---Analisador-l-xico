@@ -18,5 +18,6 @@ public enum TokenPalavraReservadas {
     PARSEFLOAT, 
     PARSEINT, 
     THROW, 
-    TOFIXED
+    TOFIXED,
+    BREAK
 }

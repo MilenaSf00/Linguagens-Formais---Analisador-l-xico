@@ -49,7 +49,7 @@ public class Token {
     public String toString() {
         return "Token{" +
                 "tipo=" + tipo +
-                ", texto='" + texto + '\'' +
+                ", texto='" + texto  +
                 ", linha=" + linha +
                 ", coluna=" + coluna +
                 '}';

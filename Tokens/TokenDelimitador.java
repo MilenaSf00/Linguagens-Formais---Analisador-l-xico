@@ -8,5 +8,7 @@ public enum TokenDelimitador {
     ABRE_COLCHETES, // [
     FECHA_COLCHETES, // ]
     VIRGULA, // ,
-    PONTO_E_VIRGULA // ;
+    PONTO_E_VIRGULA,  // ;
+    PONTO, //.
+    DOIS_PONTOS //:
 }
