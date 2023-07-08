@@ -1,18 +1,35 @@
 import Tokens.TokenCondicional;
 import Tokens.TokenEscrita;
 import Tokens.TokenLeitura;
-import Tokens.TokenNString;
 import Tokens.TokenPalavraReservadas;
 import Tokens.TokenRepeticao;
 import Tokens.TokenVariaveis;
 
 
-//O método startsWith verifica se uma string começa com determinado prefixo. Por exemplo, codigo.startsWith("//") verifica se a string codigo começa com //. Se sim, significa que o trecho de código é um comentário de linha.
-//O método matches verifica se uma string corresponde a um padrão regular expressão. 
-// Essa classe  contém métodos para verificar diferentes tipos de tokens em um código-fonte.
+/*  O método startsWith verifica se uma string começa com determinado prefixo. Por exemplo, codigo.startsWith("//") verifica se a string codigo começa com //. Se sim, significa que o trecho de código é um comentário de linha.
+    O método matches verifica se uma string corresponde a um padrão regular expressão. 
+    Essa classe  contém métodos para verificar diferentes tipos de tokens em um código-fonte.*/
 
 public class VerificandoToken {
-      // Verifica se o caractere é um número
+
+    // Verifica se a palavra é um identificador
+    public boolean isIdentificador(String palavra) {
+        // Um identificador deve começar com uma letra ou underline
+        if (!Character.isLetter(palavra.charAt(0)) && palavra.charAt(0) != '_') {
+            return false;
+        }
+
+        // Verifica se os caracteres subsequentes são letras, dígitos ou underline
+        for (int i = 1; i < palavra.length(); i++) {
+            char c = palavra.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_' && c != '.') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Verifica se o caractere é um número
     public boolean isNumber(char x) {
         return Character.isDigit(x);
     }
@@ -27,12 +44,11 @@ public class VerificandoToken {
         return codigo.matches("\\d+");
     }
 
-    // Verifica se o trecho de código corresponde a uma string delimitada por aspas
-    public boolean isNString(char codigo) {
-        return codigo == '"' || codigo == '\'';
-    /*return codigo == TokenNString.ASPAS_SIMPLES.getValor() ||
-           codigo == TokenNString.ASPAS_DUPLAS.getValor();*/
+    // Verifica se a palavra é uma string delimitada por aspas simples ou aspas duplas
+    public boolean isString(String palavra) {
+        return palavra.matches("(['\"])(.*?)\\1");
     }
+
     public boolean isOperador(String palavra) {
         return palavra.equals("+") || palavra.equals("-") || palavra.equals("*") || palavra.equals("=") ||
             palavra.equals("%") || palavra.equals("&&") || palavra.equals("||") || palavra.equals("!") ||
@@ -48,7 +64,6 @@ public class VerificandoToken {
     // Verifica se o trecho de código corresponde à função prompt()
     public boolean isEscrita(String codigo) {
        // return codigo.startsWith("prompt(") && codigo.endsWith(")");
-    
     for (TokenEscrita token : TokenEscrita.values()) {
         if (codigo.equals(token.getValor())) {
             return true;

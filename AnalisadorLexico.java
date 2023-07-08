@@ -1,12 +1,10 @@
 
 import java.util.ArrayList;
 import java.util.List;
-
 import Tokens.TokenBoolean;
 import Tokens.TokenComentario;
 import Tokens.TokenCondicional;
 import Tokens.TokenDelimitador;
-import Tokens.TokenLeitura;
 import Tokens.TokenNome;
 import Tokens.TokenOperador;
 import Tokens.TokenPalavraReservadas;
@@ -27,16 +25,15 @@ public class AnalisadorLexico {
     
         // Itera sobre as linhas do código
         for (int linha = 0; linha < linhas.length; linha++) {
-            String[] palavras = linhas[linha].split("\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=\")|(?=\")|(?<=')|(?=')|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
-
-            // Itera sobre as palavras encontradas na linha
+        String[] palavras = linhas[linha].split("\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
+            
+        // Itera sobre as palavras encontradas na linha
             for (int coluna = 0; coluna < palavras.length; coluna++) {
                 String palavra = palavras[coluna];
 
-                
                 // Verifica se a palavra é um número
             if (!palavra.isEmpty() && verificador.isNumber(palavra.charAt(0))) {
-                    
+            
                     // Verifica se é um número real
                     if (verificador.isNReal(palavra)) {
                         tokens.add(new Token(TokenNome.NREAL, palavra, linha + 1, coluna + 1));
@@ -44,13 +41,34 @@ public class AnalisadorLexico {
                     // Verifica se é um número inteiro
                     } else if (verificador.isNInt(palavra)) {
                         tokens.add(new Token(TokenNome.NINT, palavra, linha + 1, coluna + 1));
+                    }    
+                } 
+
+                // Verifica se a palavra começa com aspas simples ou aspas duplas
+                if (palavra.startsWith("\"") || palavra.startsWith("'")) {
+                    StringBuilder fraseCompleta = new StringBuilder(palavra);
+                    coluna++; // Avança para a próxima palavra
+
+                    // Concatena palavras subsequentes até encontrar a palavra que termina com o mesmo tipo de aspas
+                    while (coluna < palavras.length && !palavras[coluna].endsWith(palavra.substring(0, 1))) {
+                        fraseCompleta.append(" ").append(palavras[coluna]);
+                        coluna++; // Avança para a próxima palavra
                     }
 
-                    // Verifica se a palavra é uma string delimitada por aspas
-                } else if (!palavra.isEmpty() && verificador.isNString(palavra.charAt(0))) {
-                        tokens.add(new Token(TokenNome.NSTRING, palavra, linha + 1, coluna + 1));  } 
-                
-                    // Verifica se a palavra é um operador
+                    if (coluna < palavras.length && palavras[coluna].endsWith(palavra.substring(0, 1))) {
+                        fraseCompleta.append(" ").append(palavras[coluna]);
+                        String nstring = fraseCompleta.toString();
+                        tokens.add(new Token(TokenNome.NSTRING, nstring, linha + 1, coluna + 1));
+
+                        // Atualiza a palavra com a string completa
+                        palavra = nstring;
+                    } else {
+                        // Caso não seja encontrado o fechamento das aspas, trata como um erro
+                        System.out.println("Erro: Aspas não fechadas na linha " + (linha + 1));
+                    }
+                }
+
+                // Verifica se a palavra é um operador
                 else if (!palavra.isEmpty() && verificador.isOperador(palavra))  {
                     TokenOperador operador = null;
                     // Mapeia a palavra para o enum correspondente ao operador
@@ -125,17 +143,7 @@ public class AnalisadorLexico {
                 // Verifica se a palavra é uma função de escrita (prompt())
                 else if (verificador.isEscrita(palavra)) {
                     tokens.add(new Token(TokenNome.ESCRITA, palavra, linha + 1, coluna + 1));
-                } 
-                // Verifica se a palavra é uma função de leitura (console.log())
-               /*else if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
-                    if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
-                        tokens.add(new Token(TokenNome.LEITURA, TokenLeitura.CONSOLE_LOG.getValor(), linha + 1, coluna + 1));
-                        coluna += 2; // Avança para a próxima palavra após "log"
-                    }
-                }*/
-
-    
-                    /* Ultima modificação da verificação do console.log */
+                }                     
                 // Verifica se a palavra é "console"
                 if (palavra.equals("console") && coluna + 1 < palavras.length && palavras[coluna + 1].equals(".")) {
                     if (coluna + 2 < palavras.length && palavras[coluna + 2].equals("log")) {
@@ -144,8 +152,7 @@ public class AnalisadorLexico {
                         continue; // Pula para a próxima palavra
                     }
                 }
-               
-
+ 
                 // Verifica se a palavra é um delimitador
                 else if (!palavra.isEmpty() && verificador.isDelimitador(palavra.charAt(0))){TokenDelimitador delimitador = null;
                 // Mapeia a palavra para o enum correspondente ao delimitador
@@ -226,10 +233,14 @@ public class AnalisadorLexico {
                     TokenPalavraReservadas palavraReservada = TokenPalavraReservadas.valueOf(palavra.toUpperCase());
                     tokens.add(new Token(TokenNome.PALAVRA_RESERVADA, palavraReservada.name(), linha + 1, coluna + 1));
                 } 
+
                 // Se nenhuma das condições anteriores for atendida, assume-se que a palavra é um identificador
                 else {
+
+                     if (!palavra.trim().isEmpty()) { // Verifica se a palavra não está vazia ou contém apenas espaços em branco
                     tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
-                }
+                    //tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
+                     }}
             }
         }
         return tokens;

@@ -2,13 +2,13 @@ import Tokens.TokenNome;
 
 public class Token {
     private TokenNome tipo;
-    private String texto;
+    private String token;
     private int linha;
     private int coluna;
 
-    public Token(TokenNome tipo, String texto, int linha, int coluna) {
+    public Token(TokenNome tipo, String token, int linha, int coluna) {
         this.tipo = tipo;
-        this.texto = texto;
+        this.token = token;
         this.linha = linha;
         this.coluna = coluna;
     }
@@ -17,8 +17,8 @@ public class Token {
         return tipo;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getToken() {
+        return token;
     }
 
     public int getLinha() {
@@ -33,8 +33,8 @@ public class Token {
         this.tipo = tipo;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void setLinha(int linha) {
@@ -45,11 +45,11 @@ public class Token {
         this.coluna = coluna;
     }
 
-    @Override
+   @Override
     public String toString() {
         return "Token{" +
                 "tipo=" + tipo +
-                ", texto='" + texto  +
+                ", token='" + token  +
                 ", linha=" + linha +
                 ", coluna=" + coluna +
                 '}';
