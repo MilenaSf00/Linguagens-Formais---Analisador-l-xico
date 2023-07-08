@@ -25,15 +25,17 @@ public class AnalisadorLexico {
     
         // Itera sobre as linhas do código
         for (int linha = 0; linha < linhas.length; linha++) {
-        String[] palavras = linhas[linha].split("\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
+            String[] palavras = linhas[linha].split("\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
             
-        // Itera sobre as palavras encontradas na linha
+            // Itera sobre as palavras encontradas na linha
             for (int coluna = 0; coluna < palavras.length; coluna++) {
                 String palavra = palavras[coluna];
 
+                if(!palavra.isEmpty()){
+
+
                 // Verifica se a palavra é um número
-            if (!palavra.isEmpty() && verificador.isNumber(palavra.charAt(0))) {
-            
+                if (verificador.isNumber(palavra.charAt(0))) {
                     // Verifica se é um número real
                     if (verificador.isNReal(palavra)) {
                         tokens.add(new Token(TokenNome.NREAL, palavra, linha + 1, coluna + 1));
@@ -41,7 +43,8 @@ public class AnalisadorLexico {
                     // Verifica se é um número inteiro
                     } else if (verificador.isNInt(palavra)) {
                         tokens.add(new Token(TokenNome.NINT, palavra, linha + 1, coluna + 1));
-                    }    
+                    }
+                    //break;
                 } 
 
                 // Verifica se a palavra começa com aspas simples ou aspas duplas
@@ -69,7 +72,7 @@ public class AnalisadorLexico {
                 }
 
                 // Verifica se a palavra é um operador
-                else if (!palavra.isEmpty() && verificador.isOperador(palavra))  {
+                else if (verificador.isOperador(palavra))  {
                     TokenOperador operador = null;
                     // Mapeia a palavra para o enum correspondente ao operador
                     switch (palavra) {
@@ -115,11 +118,15 @@ public class AnalisadorLexico {
                             operador = TokenOperador.DIVISOR;
                             break;
                     }
-                        // Se um operador válido for identificado, adiciona o token correspondente à lista de tokens
+                    // Se um operador válido for identificado, adiciona o token correspondente à lista de tokens
                     if (operador != null) {
-                        tokens.add(new Token(TokenNome.OP, operador.name(), linha + 1, coluna + 1));
+                        Token token = new Token(TokenNome.OP, operador.name(), linha + 1, coluna + 1);
+                    // Verifica se o token já existe na lista de tokens
+                    if (!tokens.contains(token)) {
+                        tokens.add(token);
                     }
-                } 
+                }
+            } 
                 // Verifica se a palavra é um comentário
                 else if (verificador.isComentario(palavra)) {
                     TokenComentario comentario = null;
@@ -152,9 +159,8 @@ public class AnalisadorLexico {
                         continue; // Pula para a próxima palavra
                     }
                 }
- 
                 // Verifica se a palavra é um delimitador
-                else if (!palavra.isEmpty() && verificador.isDelimitador(palavra.charAt(0))){TokenDelimitador delimitador = null;
+                else if ( verificador.isDelimitador(palavra.charAt(0))){TokenDelimitador delimitador = null;
                 // Mapeia a palavra para o enum correspondente ao delimitador
                     switch (palavra) {
                         case "{":
@@ -192,7 +198,9 @@ public class AnalisadorLexico {
                     // Se um delimitador válido for identificado, adiciona o token correspondente à lista de tokens
                     if (delimitador != null) {
                         tokens.add(new Token(TokenNome.DELIMITADOR, delimitador.name(), linha + 1, coluna + 1));
+                  
                     }
+                   
                 } 
                 // Verifica se a palavra é uma estrutura condicional
                 else if (verificador.isCondicional(palavra)) {
@@ -204,12 +212,13 @@ public class AnalisadorLexico {
                 else if (verificador.isVariaveis(palavra)) {
                     TokenVariaveis variavel = TokenVariaveis.valueOf(palavra.toUpperCase());
                     tokens.add(new Token(TokenNome.VARIAVEIS, variavel.name(), linha + 1, coluna + 1));
+                
                 } 
 
                 // Verifica se a palavra é uma estrutura de repetição
                 else if (palavra.equals("do") && coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("{")) {
                     tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
-                    coluna++; // Avança para a próxima palavra para evitar repetição
+                    coluna++; 
                 }
 
                 // Verifica se há um fechamento de chaves e se a próxima palavra é "while"
@@ -235,14 +244,13 @@ public class AnalisadorLexico {
                 } 
 
                 // Se nenhuma das condições anteriores for atendida, assume-se que a palavra é um identificador
-                else {
-
-                     if (!palavra.trim().isEmpty()) { // Verifica se a palavra não está vazia ou contém apenas espaços em branco
-                    tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
-                    //tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
-                     }}
+                
+                else if (verificador.isIdentificador(palavra)) {
+                        tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
+                    }  
+                }
             }
-        }
-        return tokens;
+            }
+            return tokens;
+        } 
     }
-}

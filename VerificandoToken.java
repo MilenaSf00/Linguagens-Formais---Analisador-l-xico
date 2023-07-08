@@ -14,19 +14,23 @@ public class VerificandoToken {
 
     // Verifica se a palavra é um identificador
     public boolean isIdentificador(String palavra) {
-        // Um identificador deve começar com uma letra ou underline
-        if (!Character.isLetter(palavra.charAt(0)) && palavra.charAt(0) != '_') {
+     // Um identificador deve começar com uma letra (maiúscula ou minúscula) ou underline
+    if (!Character.isLetter(palavra.charAt(0)) && palavra.charAt(0) != '_') {
+        return false;
+    }
+
+    // Verifica se os caracteres subsequentes são letras, dígitos ou underline
+    for (int i = 1; i < palavra.length(); i++) {
+        char c = palavra.charAt(i);
+        if (!Character.isLetterOrDigit(c) && c != '_') {
             return false;
         }
+    }
+ 
 
-        // Verifica se os caracteres subsequentes são letras, dígitos ou underline
-        for (int i = 1; i < palavra.length(); i++) {
-            char c = palavra.charAt(i);
-            if (!Character.isLetterOrDigit(c) && c != '_' && c != '.') {
-                return false;
-            }
-        }
-        return true;
+    return !isVariaveis(palavra) && !isEscrita(palavra) && !isCondicional(palavra) 
+    && !isRepeticao(palavra);
+
     }
 
     // Verifica se o caractere é um número
@@ -55,7 +59,7 @@ public class VerificandoToken {
             palavra.equals(">") || palavra.equals("<") || palavra.equals(">=") || palavra.equals("<=") ||
             palavra.equals("==") ||  palavra.equals("/");
     }
-
+//ação do metodo fazer classes que fazem a ação
     // Verifica se o trecho de código corresponde a um comentário
     public boolean isComentario(String codigo) {
         return codigo.startsWith("//") || codigo.startsWith("/*") || codigo.endsWith("*/");
@@ -101,6 +105,9 @@ public class VerificandoToken {
         } catch (IllegalArgumentException e) {
             return false;
         }
+
+ 
+
     }
 
     // Verifica se a palavra é uma estrutura de repetição

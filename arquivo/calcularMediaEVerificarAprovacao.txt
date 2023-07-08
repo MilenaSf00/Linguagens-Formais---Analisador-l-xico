@@ -1,5 +1,5 @@
 function calcularMediaEVerificarAprovacao() {
-  // Solicitar as notas do aluno e tratar exceções
+  // Solicitar as notas do aluno e tratar excecoes
   let nota1, nota2;
 
   do {
@@ -24,13 +24,13 @@ function calcularMediaEVerificarAprovacao() {
     }
   } while (isNaN(nota2));
 
-  // Calcular a média das notas
+  // Calcular a media das notas
   const media = (nota1 + nota2) / 2;
 
-  // Definir o limite de aprovação
+  // Definir o limite de aprovacao
   const limiteAprovacao = 7;
 
-  // Verificar se o aluno passou ou não
+  // Verificar se o aluno passou ou nao
   if (media >= limiteAprovacao) {
     console.log("Parabéns! Você foi aprovado(a) com média " + media.toFixed(2));
   } else {
@@ -38,5 +38,5 @@ function calcularMediaEVerificarAprovacao() {
   }
 }
 
-// Chamar a função para executar o código
+// Chamar a funcao para executar o codigo
 calcularMediaEVerificarAprovacao();
