@@ -14,6 +14,9 @@ public class VerificandoToken {
 
     // Verifica se a palavra é um identificador
     public boolean isIdentificador(String palavra) {
+
+       
+
      // Um identificador deve começar com uma letra (maiúscula ou minúscula) ou underline
     if (!Character.isLetter(palavra.charAt(0)) && palavra.charAt(0) != '_') {
         return false;
@@ -59,7 +62,7 @@ public class VerificandoToken {
             palavra.equals(">") || palavra.equals("<") || palavra.equals(">=") || palavra.equals("<=") ||
             palavra.equals("==") ||  palavra.equals("/");
     }
-//ação do metodo fazer classes que fazem a ação
+
     // Verifica se o trecho de código corresponde a um comentário
     public boolean isComentario(String codigo) {
         return codigo.startsWith("//") || codigo.startsWith("/*") || codigo.endsWith("*/");
@@ -112,12 +115,15 @@ public class VerificandoToken {
 
     // Verifica se a palavra é uma estrutura de repetição
     public boolean isRepeticao(String palavra) {
+     
+        
         try {
             TokenRepeticao.valueOf(palavra.toUpperCase());
             return true;
         } catch (IllegalArgumentException e) {
             return false;
         }
+ 
     }
 
     // Verifica se a palavra é um valor booleano

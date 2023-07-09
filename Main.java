@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        //String nomeArquivo = "arquivo//VerificaSalarioTotal.txt";
-        String nomeArquivo = "arquivo//calcularMediaEVerificarAprovacao.txt";
+        String nomeArquivo = "arquivo//VerificaSalarioTotal.txt";
+        //String nomeArquivo = "arquivo//calcularMediaEVerificarAprovacao.txt";
         try {
             // Lê o conteúdo do arquivo
             String codigo = new String(Files.readAllBytes(Paths.get(nomeArquivo)));

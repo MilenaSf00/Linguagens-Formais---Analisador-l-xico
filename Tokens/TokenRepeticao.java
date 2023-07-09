@@ -5,5 +5,7 @@ public enum TokenRepeticao {
       FOR_IN, 
       FOR_OF, 
       DO_WHILE, 
-      WHILE
+      WHILE,
+      IN,
+      OF
 }

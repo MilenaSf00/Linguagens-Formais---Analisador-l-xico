@@ -13,6 +13,12 @@ function calcularMediaEVerificarAprovacao() {
     }
   } while (isNaN(nota1));
 
+for(var um) 
+
+for (var in objeto) 
+
+for (var of objeto) 
+
   do {
     try {
       nota2 = parseFloat(prompt("Digite a segunda nota:"));
