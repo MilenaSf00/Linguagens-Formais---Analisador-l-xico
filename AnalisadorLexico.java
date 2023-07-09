@@ -6,7 +6,6 @@ import Tokens.TokenCondicional;
 import Tokens.TokenDelimitador;
 import Tokens.TokenNome;
 import Tokens.TokenOperador;
-
 import Tokens.TokenRepeticao;
 import Tokens.TokenVariaveis;
 
@@ -27,14 +26,13 @@ public class AnalisadorLexico {
             for (int coluna = 0; coluna < palavras.length; coluna++) {
                 String palavra = palavras[coluna];
 
-                   if (!palavra.isEmpty() ) {
+                if (!palavra.isEmpty()) {
                     // Verifica se a palavra é uma estrutura de repetição "do-while"
                     if (palavra.equalsIgnoreCase("do")) {
                         // Verifica se o próximo token é uma abertura de chaves
                         if (coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("{")) {
                             tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1,
                                     coluna + 1));
-
                             // Verifica se o token anterior é uma abertura de chaves
                             if (tokens.size() > 1 && tokens.get(tokens.size() - 1).getTipo() == TokenNome.DELIMITADOR &&
                                     tokens.get(tokens.size() - 1).getToken()
@@ -43,7 +41,6 @@ public class AnalisadorLexico {
                                 coluna++;
                                 continue;
                             }
-
                             tokens.add(new Token(TokenNome.DELIMITADOR, TokenDelimitador.ABRE_CHAVES.name(), linha + 1,
                                     coluna + 2));
                             coluna++; // Avança para a próxima palavra após a abertura de chaves
@@ -51,13 +48,15 @@ public class AnalisadorLexico {
                         }
                     }
                     // Verifica se a palavra é o fechamento de chaves seguido de "while"
-                    if (palavra.equals("}") && coluna + 1 < palavras.length && palavras[coluna + 1].equalsIgnoreCase("while")) {
-                        tokens.add(new Token(TokenNome.DELIMITADOR, TokenDelimitador.FECHA_CHAVES.name(), linha + 1,coluna + 1));
-                        tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
-                        
+                    if (palavra.equals("}") && coluna + 1 < palavras.length
+                            && palavras[coluna + 1].equalsIgnoreCase("while")) {
+                        tokens.add(new Token(TokenNome.DELIMITADOR, TokenDelimitador.FECHA_CHAVES.name(), linha + 1,
+                                coluna + 1));
+                        tokens.add(
+                                new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
+
                         coluna++; // Avança para a próxima palavra após a palavra "while"
                         continue; // Pula para a próxima palavra
-                        
                     }
                     // Verifica se a palavra é um token de repetição (while, for, etc.)
                     try {
@@ -66,7 +65,6 @@ public class AnalisadorLexico {
                     } catch (IllegalArgumentException e) {
                         // Palavra não é um token de repetição
                     }
-
                     // Restante das condições para identificar os outros tipos de token
                     if (verificador.isNumber(palavra.charAt(0))) {
                         if (verificador.isNReal(palavra)) {
@@ -86,7 +84,6 @@ public class AnalisadorLexico {
                             fraseCompleta.append(" ").append(palavras[coluna]);
                             coluna++; // Avança para a próxima palavra
                         }
-
                         if (coluna < palavras.length && palavras[coluna].endsWith(palavra.substring(0, 1))) {
                             fraseCompleta.append(" ").append(palavras[coluna]);
                             String nstring = fraseCompleta.toString();
@@ -98,7 +95,6 @@ public class AnalisadorLexico {
                             // Caso não seja encontrado o fechamento das aspas, trata como um erro
                             System.out.println("Erro: Aspas não fechadas na linha " + (linha + 1));
                         }
-
                     } else if (verificador.isOperador(palavra)) {
                         tokens.add(criarTokenOperador(palavra, linha + 1, coluna + 1));
 
@@ -128,9 +124,7 @@ public class AnalisadorLexico {
                         tokens.add(criarTokenBoolean(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isPalavraReservada(palavra)) {
-                        tokens.add(
-                                new Token(TokenNome.PALAVRA_RESERVADA, palavra.toUpperCase(), linha + 1, coluna + 1));
-
+                        tokens.add(new Token(TokenNome.PALAVRA_RESERVADA, palavra.toUpperCase(), linha + 1, coluna + 1));
                     } else if (verificador.isIdentificador(palavra)) {
                         // Verifica se é um identificador
                         tokens.add(new Token(TokenNome.ID, palavra, linha + 1, coluna + 1));
@@ -138,68 +132,12 @@ public class AnalisadorLexico {
                 }
             }
         }
-
         return tokens;
     }
 
     private String[] separarPalavras(String linha) {
         return linha.split(
                 "\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
-    }
-
-    private int criarTokenRepeticao(List<Token> tokens, String[] palavras, int linha, int coluna) {
-        String palavra = palavras[coluna];
-
-        if (palavra.equalsIgnoreCase("do")) {
-            // Verifica se o próximo token é uma abertura de chaves
-            if (coluna + 1 < palavras.length && palavras[coluna + 1].trim().equals("{")) {
-                tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 1));
-
-                // Verifica se o token anterior é uma abertura de chaves
-                if (tokens.size() > 1 && tokens.get(tokens.size() - 1).getTipo() == TokenNome.DELIMITADOR &&
-                        tokens.get(tokens.size() - 1).getToken().equals(TokenDelimitador.ABRE_CHAVES.name())) {
-                    // Pula a adição do token ABRE_CHAVES
-                    coluna++;
-                    return coluna;
-                }
-
-                tokens.add(
-                        new Token(TokenNome.DELIMITADOR, TokenDelimitador.ABRE_CHAVES.name(), linha + 1, coluna + 2));
-                coluna++; // Avança para a próxima palavra após a abertura de chaves
-                return coluna;
-            }
-        }
-
-        // Verifica se a palavra é o fechamento de chaves seguido de "while"
-        if (palavra.equals("}") && coluna + 1 < palavras.length && palavras[coluna + 1].equalsIgnoreCase("while")) {
-            tokens.add(new Token(TokenNome.DELIMITADOR, TokenDelimitador.FECHA_CHAVES.name(), linha + 1, coluna + 1));
-            coluna++; // Avança para a próxima palavra após o fechamento de chaves
-
-            if (coluna + 1 < palavras.length && palavras[coluna + 1].equals("while")) {
-                tokens.add(new Token(TokenNome.REPETICAO, TokenRepeticao.DO_WHILE.name(), linha + 1, coluna + 2));
-                coluna++; // Avança para a próxima palavra após o "while"
-            }
-        }
-
-        return coluna;
-    }
-
-    private String extrairString(String[] palavras, int coluna) {
-        StringBuilder fraseCompleta = new StringBuilder(palavras[coluna]);
-        coluna++; // Avança para a próxima palavra
-
-        while (coluna < palavras.length && !palavras[coluna].endsWith(palavras[coluna - 1].substring(0, 1))) {
-            fraseCompleta.append(" ").append(palavras[coluna]);
-            coluna++; // Avança para a próxima palavra
-        }
-
-        if (coluna < palavras.length && palavras[coluna].endsWith(palavras[coluna - 1].substring(0, 1))) {
-            fraseCompleta.append(" ").append(palavras[coluna]);
-            return fraseCompleta.toString();
-        } else {
-            System.out.println("Erro: Aspas não fechadas na linha " + (coluna + 1));
-            return null;
-        }
     }
 
     private Token criarTokenOperador(String palavra, int linha, int coluna) {
@@ -248,7 +186,6 @@ public class AnalisadorLexico {
                 operador = TokenOperador.DIVISOR;
                 break;
         }
-
         if (operador != null) {
             return new Token(TokenNome.OP, operador.name(), linha, coluna);
         } else {
@@ -269,7 +206,6 @@ public class AnalisadorLexico {
                 comentario = TokenComentario.FIM_COMENTARIO_BLOCO;
                 break;
         }
-
         if (comentario != null) {
             return new Token(TokenNome.COMENTARIO, comentario.name(), linha, coluna);
         } else {
@@ -311,7 +247,6 @@ public class AnalisadorLexico {
                 delimitador = TokenDelimitador.DOIS_PONTOS;
                 break;
         }
-
         if (delimitador != null) {
             return new Token(TokenNome.DELIMITADOR, delimitador.name(), linha, coluna);
         } else {

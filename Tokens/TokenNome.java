@@ -15,6 +15,5 @@ public enum TokenNome {
     REPETICAO,   // Palavras reservadas relacionadas a estruturas de repetição
     BOOLEAN,     // Valores booleanos
     PALAVRA_RESERVADA, // Outras palavras reservadas
-    // Adicione outros tokens conforme necessário
 }
 

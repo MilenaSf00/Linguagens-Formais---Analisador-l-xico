@@ -11,17 +11,13 @@ import Tokens.TokenVariaveis;
     Essa classe  contém métodos para verificar diferentes tipos de tokens em um código-fonte.*/
 
 public class VerificandoToken {
-
     // Verifica se a palavra é um identificador
     public boolean isIdentificador(String palavra) {
-
-       
 
      // Um identificador deve começar com uma letra (maiúscula ou minúscula) ou underline
     if (!Character.isLetter(palavra.charAt(0)) && palavra.charAt(0) != '_') {
         return false;
     }
-
     // Verifica se os caracteres subsequentes são letras, dígitos ou underline
     for (int i = 1; i < palavra.length(); i++) {
         char c = palavra.charAt(i);
@@ -29,11 +25,8 @@ public class VerificandoToken {
             return false;
         }
     }
- 
-
     return !isVariaveis(palavra) && !isEscrita(palavra) && !isCondicional(palavra) 
     && !isRepeticao(palavra);
-
     }
 
     // Verifica se o caractere é um número
@@ -70,11 +63,11 @@ public class VerificandoToken {
 
     // Verifica se o trecho de código corresponde à função prompt()
     public boolean isEscrita(String codigo) {
-       // return codigo.startsWith("prompt(") && codigo.endsWith(")");
+        //return codigo.startsWith("prompt(") && codigo.endsWith(")");
     for (TokenEscrita token : TokenEscrita.values()) {
         if (codigo.equals(token.getValor())) {
             return true;
-        }
+        } 
     }
         return false;
     }
@@ -108,22 +101,16 @@ public class VerificandoToken {
         } catch (IllegalArgumentException e) {
             return false;
         }
-
- 
-
     }
 
     // Verifica se a palavra é uma estrutura de repetição
     public boolean isRepeticao(String palavra) {
-     
-        
         try {
             TokenRepeticao.valueOf(palavra.toUpperCase());
             return true;
         } catch (IllegalArgumentException e) {
             return false;
         }
- 
     }
 
     // Verifica se a palavra é um valor booleano

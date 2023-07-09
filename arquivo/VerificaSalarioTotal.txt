@@ -14,10 +14,15 @@ function verificaSalarioTotal() {
       break;
   }
 
-'Dab as 8'
-"Dab as 8"
+do {
+
+} while
+'efg 00'
+"abc 123"
 " " 
 '  '
+abc_d 
+
 // você
 
   salario = parseFloat(prompt("Digite seu salário:"));

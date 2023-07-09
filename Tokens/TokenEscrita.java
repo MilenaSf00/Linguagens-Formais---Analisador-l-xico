@@ -1,8 +1,7 @@
 package Tokens;
 
 public enum TokenEscrita {
-    PROMPT("prompt");
-    
+   PROMPT("prompt");
     private final String valor;
 
     TokenEscrita(String valor) {
@@ -12,4 +11,5 @@ public enum TokenEscrita {
     public String getValor() {
         return valor;
     }
+
 }

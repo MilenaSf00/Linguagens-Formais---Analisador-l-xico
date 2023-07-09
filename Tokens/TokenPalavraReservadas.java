@@ -20,4 +20,5 @@ public enum TokenPalavraReservadas {
     THROW, 
     TOFIXED,
     BREAK
+
 }
