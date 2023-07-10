@@ -1,13 +1,13 @@
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         try {
             String nomeArquivo1 = "arquivo//VerificaSalarioTotal.txt";
-            String codigo1 = new String(Files.readAllBytes(Paths.get(nomeArquivo1)));
+            String codigo1 = lerArquivo(nomeArquivo1);
 
             AnalisadorLexico analisador1 = new AnalisadorLexico();
             List<Token> tokens1 = analisador1.le_token(codigo1);
@@ -28,7 +28,7 @@ public class Main {
 
         try {
             String nomeArquivo2 = "arquivo//calcularMediaEVerificarAprovacao.txt";
-            String codigo2 = new String(Files.readAllBytes(Paths.get(nomeArquivo2)));
+            String codigo2 = lerArquivo(nomeArquivo2);
 
             AnalisadorLexico analisador2 = new AnalisadorLexico();
             List<Token> tokens2 = analisador2.le_token(codigo2);
@@ -51,5 +51,17 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo calcularMediaEVerificarAprovacao: " + e.getMessage());
         }
+    }
+
+    private static String lerArquivo(String nomeArquivo) throws IOException {
+        File file = new File(nomeArquivo);
+        StringBuilder sb = new StringBuilder();
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()) {
+            sb.append(scanner.nextLine());
+            sb.append("\n");
+        }
+        scanner.close();
+        return sb.toString();
     }
 }
