@@ -96,10 +96,10 @@ public class AnalisadorLexico {
                             System.out.println("Erro: Aspas não fechadas na linha " + (linha + 1));
                         }
                     } else if (verificador.isOperador(palavra)) {
-                        tokens.add(criarTokenOperador(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenOperador(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isComentario(palavra)) {
-                        tokens.add(criarTokenComentario(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenComentario(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isEscrita(palavra)) {
                         tokens.add(new Token(TokenNome.ESCRITA, palavra, linha + 1, coluna + 1));
@@ -112,16 +112,16 @@ public class AnalisadorLexico {
                             continue; // Pula para a próxima palavra
                         }
                     } else if (verificador.isDelimitador(palavra.charAt(0))) {
-                        tokens.add(criarTokenDelimitador(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenDelimitador(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isCondicional(palavra)) {
-                        tokens.add(criarTokenCondicional(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenCondicional(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isVariaveis(palavra)) {
-                        tokens.add(criarTokenVariaveis(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenVariaveis(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isBoolean(palavra)) {
-                        tokens.add(criarTokenBoolean(palavra, linha + 1, coluna + 1));
+                        tokens.add(tokenBoolean(palavra, linha + 1, coluna + 1));
 
                     } else if (verificador.isPalavraReservada(palavra)) {
                         tokens.add(new Token(TokenNome.PALAVRA_RESERVADA, palavra.toUpperCase(), linha + 1, coluna + 1));
@@ -140,7 +140,7 @@ public class AnalisadorLexico {
                 "\\s+|(?<=\\()|(?=\\()|(?<=\\))|(?=\\))|(?<=,)|(?=,)|(?<=;)|(?=;)|(?<=:)|(?=:)|(?<!>)>(?!=)|(?<=\\.)|(?=\\.)");
     }
 
-    private Token criarTokenOperador(String palavra, int linha, int coluna) {
+    private Token tokenOperador(String palavra, int linha, int coluna) {
         TokenOperador operador = null;
         switch (palavra) {
             case "+":
@@ -193,7 +193,7 @@ public class AnalisadorLexico {
         }
     }
 
-    private Token criarTokenComentario(String palavra, int linha, int coluna) {
+    private Token tokenComentario(String palavra, int linha, int coluna) {
         TokenComentario comentario = null;
         switch (palavra) {
             case "//":
@@ -213,7 +213,7 @@ public class AnalisadorLexico {
         }
     }
 
-    private Token criarTokenDelimitador(String palavra, int linha, int coluna) {
+    private Token tokenDelimitador(String palavra, int linha, int coluna) {
         TokenDelimitador delimitador = null;
         switch (palavra) {
             case "{":
@@ -254,17 +254,17 @@ public class AnalisadorLexico {
         }
     }
 
-    private Token criarTokenCondicional(String palavra, int linha, int coluna) {
+    private Token tokenCondicional(String palavra, int linha, int coluna) {
         TokenCondicional condicional = TokenCondicional.valueOf(palavra.toUpperCase());
         return new Token(TokenNome.CONDICIONAL, condicional.name(), linha, coluna);
     }
 
-    private Token criarTokenVariaveis(String palavra, int linha, int coluna) {
+    private Token tokenVariaveis(String palavra, int linha, int coluna) {
         TokenVariaveis variavel = TokenVariaveis.valueOf(palavra.toUpperCase());
         return new Token(TokenNome.VARIAVEIS, variavel.name(), linha, coluna);
     }
 
-    private Token criarTokenBoolean(String palavra, int linha, int coluna) {
+    private Token tokenBoolean(String palavra, int linha, int coluna) {
         boolean valor = palavra.equals("true");
         TokenBoolean valorBooleano = valor ? TokenBoolean.TRUE : TokenBoolean.FALSE;
         return new Token(TokenNome.BOOLEAN, valorBooleano.name(), linha, coluna);
