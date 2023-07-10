@@ -1,0 +1,38 @@
+function verificaSalarioTotal() {
+  var salario, salarioTotal;
+  var isMaiorDeIdade = false;
+  var desconto = 200;
+
+  var idade = parseInt(prompt("Digite sua idade:"));
+
+  switch (idade >= 18) {
+    case true:
+      isMaiorDeIdade = true;
+      break;
+    default:
+      isMaiorDeIdade = false;
+      break;
+  }
+
+do {
+
+} while
+'efg 00'
+"abc 123"
+" " 
+'  '
+abc_d 
+
+// você
+
+  salario = parseFloat(prompt("Digite seu salário:"));
+
+  salarioTotal = (salario - desconto) * 2;
+
+  console.log("Salário com desconto e multiplicado por 2: " + salarioTotal);
+  return salarioTotal;
+
+var resultado = verificaSalarioTotal();
+console.log("Resultado: " + resultado);
+}
+
